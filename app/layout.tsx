@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import LoadingScreen from "@/components/LoadingScreen";
 import "./globals.css";
 
 import { ThemeProvider } from "next-themes";
@@ -36,6 +37,7 @@ export default function RootLayout({
           defaultTheme="theme-1"
           enableSystem={false}
         >
+          <LoadingScreen />
           {children}
         </ThemeProvider>
       </body>
