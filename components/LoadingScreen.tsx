@@ -29,18 +29,17 @@ export default function LoadingScreen() {
         phase === "exit-screen" ? "opacity-0" : "opacity-100"
       }`}
     >
-      {/* TODO: Remplace /next.svg */}
       <div
         className={`transition-opacity duration-700 ${
           phase === "visible" ? "opacity-100" : "opacity-0"
         }`}
       >
         <Image
-          src="/next.svg"
+          src="/welcome.svg"
           alt="Logo"
-          width={120}
-          height={40}
-          className="dark:invert"
+          width={200}
+          height={200}
+          style={{ width: "auto", height: "auto" }}
           priority
         />
       </div>
