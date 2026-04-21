@@ -12,6 +12,8 @@
   --background: #000000;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--primary-color);
@@ -25,4 +27,19 @@ body {
   background: var(--background);
   color: var(--primary-color);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes icon-in {
+  0% {
+    transform: rotate(-60deg) scale(0.4);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-icon-in {
+  animation: icon-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
