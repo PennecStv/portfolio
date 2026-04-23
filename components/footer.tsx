@@ -24,7 +24,7 @@ export default function Footer({
     showLogo =      true,
 }: FooterProps) {
     return (
-        <footer className="w-full bg-black text-secondary-color py-12 px-4">
+        <footer className="w-full bg-black text-secondary py-12 px-4">
             { /* Container for max-width and centered content */ }
             <div className="max-w-4xl mx-auto flex flex-col gap-8">
 
@@ -35,7 +35,7 @@ export default function Footer({
                 <NavSection navLinks={navLinks} showLogo={showLogo} />
 
                 { /* Section #3: Divider line */ }
-                <div className="w-full h-px bg-secondary-color opacity-50"></div>
+                <div className="w-full h-px bg-secondary opacity-50"></div>
 
                 { /* Section #4: Social links and icons */ }
                 <SocialSection socialLinks={socialLinks} />
@@ -54,13 +54,13 @@ function TopDecoration() {
     return (
         <div className="flex items-center justify-center gap-4">
             { /* Line on left side of diamond */ }
-            <div className="flex-1 h-px bg-secondary-color opacity-40"></div>
+            <div className="flex-1 h-px bg-secondary opacity-40"></div>
 
             { /* Diamond shape */ }
-            <div className="w-6 h-6 bg-secondary-color transform rotate-45"></div>
+            <div className="w-6 h-6 bg-secondary transform rotate-45"></div>
 
             { /* Line on right side of diamond */ }
-            <div className="flex-1 h-px bg-secondary-color opacity-40"></div>
+            <div className="flex-1 h-px bg-secondary opacity-40"></div>
         </div>
     );
 }
@@ -80,12 +80,12 @@ function NavSection({ navLinks, showLogo }: NavSectionProps) {
                 <React.Fragment key={link.id}>
                     { /* Logo conditionally rendered, after 2nd link */ }
                     {showLogo && index === 2 && (
-                        <span className="font-bold text-xl text-secondary-color">LOGO?</span>
+                        <span className="font-bold text-xl text-secondary">LOGO?</span>
                     )}
 
                     <a
                         href={link.href}
-                        className="text-secondary-color hover:opacity-70 transition-opacity text-sm font-medium"
+                        className="text-secondary hover:opacity-70 transition-opacity text-sm font-medium"
                     >{link.label}
                     </a>
                 </React.Fragment>
@@ -109,8 +109,8 @@ function SocialSection({ socialLinks }: SocialSectionProps) {
                     key={social.id}
                     href={social.href}
                     title={social.label}
-                    className="inline-flex items-center justify-center w-10 h-10 border-2 border-secondary-color rounded-full 
-                               hover:bg-secondary-color hover:text-black transition-colors"
+                    className="inline-flex items-center justify-center w-10 h-10 border-2 border-secondary rounded-full 
+                               hover:bg-secondary hover:text-black transition-colors"
                 >
                     { /* Icon would go here, placeholder for now :D */ }
                     <span className="text-xs font-semibold">{social.label.charAt(0)}</span>
@@ -129,7 +129,7 @@ interface CopyrightSectionProps {
 
 function CopyrightSection({ copyrightYear }: CopyrightSectionProps) {
     return (
-        <p className="text-center text-xs text-secondary-color opacity-70">
+        <p className="text-center text-xs text-secondary opacity-70">
             © {copyrightYear}
             {' '}
             <a href="#" className="hover:opacity-100 transition-opacity">
