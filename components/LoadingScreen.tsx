@@ -25,8 +25,10 @@ export default function LoadingScreen() {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-black transition-opacity duration-700 ${
-        phase === "exit-screen" ? "opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-background transition-opacity duration-700 ${
+        phase === "exit-screen"
+          ? "opacity-0 pointer-events-none"
+          : "opacity-100"
       }`}
     >
       <div
@@ -36,7 +38,7 @@ export default function LoadingScreen() {
       >
         <Image
           src="/welcome.svg"
-          alt="Logo"
+          alt="Welcome"
           width={200}
           height={200}
           style={{ width: "auto", height: "auto" }}
