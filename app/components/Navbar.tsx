@@ -11,7 +11,7 @@ const links = [
 
 export default function Navbar() {
   return (
-    <header className="border-b border-zinc-200 dark:border-zinc-800">
+    <header className="border-b-4 border-b-[var(--primary-color)]">
       <nav className="mx-auto flex items-center justify-between px-16 py-6">
         <div>
           <Link href="/" className="text-xl font-semibold">

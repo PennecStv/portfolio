@@ -60,7 +60,7 @@ export default function LanguageSelector() {
     <div ref={ref} className="relative">
       <button
         onClick={toggle}
-        className="flex items-center gap-1.5 rounded-lg border border-zinc-200 px-3 py-1.5 text-sm text-zinc-700 transition-all duration-200 hover:border-zinc-300 hover:bg-zinc-50 active:scale-95 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-800"
+        className="flex items-center gap-1.5 rounded-lg border border-[var(--primary-color)] border-b-4 px-3 py-1.5 text-sm text-zinc-700 transition-all duration-200 hover:bg-zinc-50 active:scale-95 dark:text-zinc-300 dark:hover:bg-zinc-800"
         aria-haspopup="listbox"
         aria-expanded={open}
       >
@@ -77,7 +77,7 @@ export default function LanguageSelector() {
       {visible && (
         <ul
           role="listbox"
-          className={`absolute right-0 top-full z-10 mt-1.5 min-w-full overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-md transition-all duration-200 origin-top-right dark:border-zinc-700 dark:bg-zinc-900 ${
+          className={`absolute right-0 top-full z-10 mt-1.5 min-w-full overflow-hidden rounded-lg border border-[var(--primary-color)] bg-white shadow-md transition-all duration-200 origin-top-right dark:bg-zinc-900 ${
             open
               ? "opacity-100 scale-100 translate-y-0"
               : "opacity-0 scale-95 -translate-y-1"
