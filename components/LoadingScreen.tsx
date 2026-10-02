@@ -4,11 +4,19 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 type Phase = "hidden" | "visible" | "exit-image" | "exit-screen" | "done";
+const LOADING_SCREEN_SHOWN_KEY = "portfolio-loading-screen-shown";
 
 export default function LoadingScreen() {
   const [phase, setPhase] = useState<Phase>("hidden");
 
   useEffect(() => {
+    if (window.localStorage.getItem(LOADING_SCREEN_SHOWN_KEY) === "true") {
+      const skip = setTimeout(() => setPhase("done"), 0);
+      return () => clearTimeout(skip);
+    }
+
+    window.localStorage.setItem(LOADING_SCREEN_SHOWN_KEY, "true");
+
     const t0 = setTimeout(() => setPhase("visible"), 50);
     const t1 = setTimeout(() => setPhase("exit-image"), 1400);
     const t2 = setTimeout(() => setPhase("exit-screen"), 2100);
