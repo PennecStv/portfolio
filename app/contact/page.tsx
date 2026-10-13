@@ -1,8 +1,9 @@
 // app/contact/page.tsx
 
 "use client";
+
 import LoadingScreen from "@/components/LoadingScreen";
-import { DefaultStyle, Divider, FieldLabel } from "@/app/components/ContactForm";
+import { DefaultStyle, Divider, FieldLabel, SocialRotaryButton } from "@/app/components/ContactForm";
 
 export default function Contact() {
   return (
@@ -14,7 +15,15 @@ export default function Contact() {
             Me contacter
           </h1>
           <p className="mt-6 max-w-2xl text-xl leading-8 text-secondary sm:text-2xl">
-            Joignable au +33 1 23 45 67 89 📞 <br/> Vous pouvez également m&apos;écrire
+            Joignable au +33 1 23 45 67 89 📞 
+          </p>
+
+          <div className="mt-6 flex items-center gap-4">
+            <SocialRotaryButton />
+          </div>
+
+          <p className="mt-6 max-w-2xl text-xl leading-8 text-secondary sm:text-2xl">
+            Vous pouvez également m&apos;écrire
             directement grâce au formulaire ci-dessous.
           </p>
           <p className="mt-6 max-w-2xl text-xl leading-4 text-secondary sm:text-md">
