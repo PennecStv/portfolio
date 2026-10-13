@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { ContactSocial, FieldLabelProps, KnobPosition } from "../types/contact";
 
 /**
  * Returns the default style for a form input.
@@ -26,14 +27,8 @@ export const Divider = ({ size }: {size: string}) => {
     );
 };
 
-type FieldLabelProps = {
-    label: string;
-    children: React.ReactNode;
-    className?: string;
-    required?: boolean;
-} & React.LabelHTMLAttributes<HTMLLabelElement>;
 /**
- * A field label component, using the FieldLabelProps type.
+ * A field label component, using the FieldLabelProps interface.
  * @param label The label text.
  * @param required Whether the field is required.
  * @param children The child elements.
@@ -66,27 +61,18 @@ export function FieldLabel({
  * A social rotary button component for selecting a social media link.
  * @returns The social rotary button component.
  */
-type ContactSocial = {
-  label: string;
-  href: string;
-};
 
 const CONTACT_SOCIALS: ContactSocial[] = [
   { label: "GitHub", href: "https://github.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
 ];
 
+const MAX_OFFSET = 33;
+const DEAD_ZONE = 8;
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
-
-type KnobPosition = {
-  x: number;
-  y: number;
-};
-
-const MAX_OFFSET = 33;
-const DEAD_ZONE = 8;
 
 function angleForIndex(index: number, maximumIndex: number) {
   return maximumIndex === 0
