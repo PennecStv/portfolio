@@ -2,15 +2,7 @@
 
 "use client";
 import LoadingScreen from "@/components/LoadingScreen";
-import "../globals.css";
-
-const Divider = () => {
-    return (
-        <hr
-            style={{ borderTop: "1px solid lightgrey" }}
-        ></hr>
-    );
-};
+import { DefaultStyle, Divider, FieldLabel, RequiredFieldLabel } from "@/app/components/ContactForm";
 
 export default function Contact() {
   return (
@@ -33,17 +25,14 @@ export default function Contact() {
 
           <form
             className="mt-12 flex max-w-2xl flex-col gap-6"
-            action="mailto:contact@example.com"
+            action="/api/contact"
             method="post"
-            encType="text/plain"
+            encType="multipart/form-data"
           >
             <div className="grid gap-6 sm:grid-cols-3">
-              <label className="flex flex-col gap-2 text-lg font-medium">
-                <span>
-                  Civilité <span className="text-red-500">*</span>
-                </span>
+              <RequiredFieldLabel label="Civilité">
                 <select
-                  className="min-h-12 w-min border-2 border-foreground bg-transparent px-2 py-3 text-lg text-foreground italic outline-none transition-colors placeholder:text-foreground/60 focus:border-secondary"
+                  className={DefaultStyle({ other: "w-min" })} 
                   name="title"
                   autoComplete="honorific-prefix"
                   required
@@ -53,13 +42,11 @@ export default function Contact() {
                   <option value="mrs">Mme</option>
                   <option value="other">Autre</option>
                 </select>
-              </label>
-              <label className="flex flex-col gap-2 text-lg font-medium">
-                <span>
-                  Prénom <span className="text-red-500">*</span>
-                </span>
+              </RequiredFieldLabel>
+
+              <RequiredFieldLabel label="Prénom">
                 <input
-                  className="min-h-12 border-2 border-foreground bg-transparent px-4 py-3 text-lg text-foreground italic outline-none transition-colors placeholder:text-foreground/60 focus:border-secondary"
+                  className={DefaultStyle({})}
                   type="text"
                   name="firstname"
                   placeholder="Votre prénom"
@@ -74,13 +61,10 @@ export default function Contact() {
                   autoComplete="firstname"
                   required
                 />
-              </label>
-              <label className="flex flex-col gap-2 text-lg font-medium">
-                <span>
-                  Nom <span className="text-red-500">*</span>
-                </span>
+              </RequiredFieldLabel>
+              <RequiredFieldLabel label="Nom">
                 <input
-                  className="min-h-12 border-2 border-foreground bg-transparent px-4 py-3 text-lg text-foreground italic outline-none transition-colors placeholder:text-foreground/60 focus:border-secondary"
+                  className={DefaultStyle({})}
                   type="text"
                   name="lastname"
                   placeholder="Votre nom"
@@ -95,12 +79,11 @@ export default function Contact() {
                   autoComplete="lastname"
                   required
                 />
-              </label>
+              </RequiredFieldLabel>
 
-              <label className="flex flex-col gap-2 text-lg font-medium">
-                Entreprise
+              <FieldLabel label="Entreprise">
                 <input
-                  className="min-h-12 w-lg border-2 border-foreground bg-transparent px-4 py-3 text-lg text-foreground italic outline-none transition-colors placeholder:text-foreground/60 focus:border-secondary"
+                  className={DefaultStyle({ other: "w-lg" })}
                   type="text"
                   name="firm"
                   placeholder="Nom de votre entreprise"
@@ -115,16 +98,13 @@ export default function Contact() {
                   autoComplete="organization"
                   required
                 />
-              </label>
+              </FieldLabel>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
-              <label className="flex flex-col gap-2 text-lg font-medium">
-                <span>
-                  Email <span className="text-red-500">*</span>
-                </span>
+              <RequiredFieldLabel label="Email">
                 <input
-                  className="min-h-12 border-2 border-foreground bg-transparent px-4 py-3 text-lg text-foreground italic outline-none transition-colors placeholder:text-foreground/60 focus:border-secondary"
+                  className={DefaultStyle({})}
                   type="email"
                   name="email"
                   placeholder="vous@exemple.com"
@@ -139,12 +119,11 @@ export default function Contact() {
                   autoComplete="email"
                   required
                 />
-              </label>
+              </RequiredFieldLabel>
               
-              <label className="flex flex-col gap-2 text-lg font-medium">
-                Téléphone
+              <FieldLabel label="Téléphone">
                 <input
-                  className="min-h-12 border-2 border-foreground bg-transparent px-4 py-3 text-lg text-foreground italic outline-none transition-colors placeholder:text-foreground/60 focus:border-secondary"
+                  className={DefaultStyle({})}
                   type="text"
                   name="phone"
                   placeholder="Votre numéro de téléphone"
@@ -157,39 +136,32 @@ export default function Contact() {
                     }
                   }}
                   autoComplete="tel"
-                  // required
                 />
-              </label>
+              </FieldLabel>
             </div>
 
-            <div className="overflow-hidden border-2 border-foreground bg-transparent transition-colors focus-within:border-secondary">
-              <label className="flex flex-col gap-2 px-4 pt-3 text-lg font-medium">
-                <span>
-                  Objet <span className="text-red-500">*</span> :
+            <div className="overflow-hidden border-2 border-foreground bg-transparent transition-colors focus-within:border-secondary rounded-xl">
+              <RequiredFieldLabel label="Objet" className="px-4 pt-3">
                 <input
-                  className="min-h-12 border-0 bg-transparent px-1 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
+                  className="min-h-12 border-0 bg-transparent px-0 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
                   type="text"
                   name="subject"
-                  placeholder="l'objet de votre message"
+                  placeholder="L'objet de votre message"
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "l'objet de votre message";
+                      event.currentTarget.placeholder = "L'objet de votre message";
                     }
                   }}
                   required
                 />
-                </span>
-              </label>
+              </RequiredFieldLabel>
 
-              <Divider />
+              <Divider size="w-100">  </Divider>
 
-              <label className="flex flex-col gap-2 px-4 pb-3 pt-3 text-lg font-medium">
-                <span>
-                  Message <span className="text-red-500">*</span>
-                </span>
+              <RequiredFieldLabel label="Message" className="px-4 pb-3 pt-3">
                 <textarea
                   className="min-h-40 resize-y border-0 bg-transparent px-0 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
                   name="message"
@@ -204,7 +176,19 @@ export default function Contact() {
                   }}
                   required
                 />
-              </label>
+              </RequiredFieldLabel>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2">
+              <FieldLabel label="Pièce(s) jointe(s)">
+                <input
+                  className={DefaultStyle({})}
+                  type="file"
+                  name="attachments"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  multiple
+                />
+              </FieldLabel>
             </div>
 
             <button
