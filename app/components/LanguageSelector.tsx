@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useI18n, type Locale } from "../i18n";
 
-const languages = [
+const languages: { code: Locale; label: string; flag: string }[] = [
   { code: "fr", label: "FR", flag: "/fr.svg" },
   { code: "en", label: "EN", flag: "/en.svg" },
 ];
@@ -29,7 +30,9 @@ function ChevronDownIcon({ open }: { open: boolean }) {
 }
 
 export default function LanguageSelector() {
-  const [selected, setSelected] = useState(languages[0]);
+  const { locale, setLocale } = useI18n();
+  const selected =
+    languages.find((language) => language.code === locale) ?? languages[0];
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -99,7 +102,7 @@ export default function LanguageSelector() {
               >
                 <button
                   onClick={() => {
-                    setSelected(lang);
+                    setLocale(lang.code);
                     closeDropdown();
                   }}
                   className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-sm transition-colors duration-150 ${

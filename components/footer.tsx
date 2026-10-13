@@ -2,14 +2,7 @@
 
 import React from "react";
 import { NavLink, SocialLink, FooterProps } from "../app/types/footer";
-
-// Default navigation links for the footer
-const DEFAULT_NAV_LINKS: NavLink[] = [
-  { id: "1", label: "Home", href: "#" },
-  { id: "2", label: "About", href: "#" },
-  { id: "3", label: "Projects", href: "#" },
-  { id: "4", label: "Contact", href: "#" },
-];
+import { useI18n } from "../app/i18n";
 
 // Default social links
 const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
@@ -18,11 +11,19 @@ const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
 ];
 
 export default function Footer({
-  navLinks = DEFAULT_NAV_LINKS,
-  socialLinks = DEFAULT_SOCIAL_LINKS,
+  navLinks,
+  socialLinks,
   copyrightYear = "2021 - 2026",
   showLogo = true,
 }: FooterProps) {
+  const { t } = useI18n();
+  const resolvedNavLinks: NavLink[] = navLinks ?? [
+    { id: "1", label: t.nav.home, href: "#" },
+    { id: "2", label: t.nav.about, href: "#" },
+    { id: "3", label: t.nav.projects, href: "#" },
+    { id: "4", label: t.nav.contact, href: "#" },
+  ];
+
   return (
     <footer className="w-full bg-black text-foreground py-12 px-4">
       {/* Container for max-width and centered content */}
@@ -31,16 +32,20 @@ export default function Footer({
         <TopDecoration />
 
         {/* Section #2: Navigation links */}
-        <NavSection navLinks={navLinks} showLogo={showLogo} />
+        <NavSection navLinks={resolvedNavLinks} showLogo={showLogo} />
 
         {/* Section #3: Divider line */}
         <div className="w-[65vw] self-center h-px bg-foreground opacity-50"></div>
 
         {/* Section #4: Social links and icons */}
-        <SocialSection socialLinks={socialLinks} />
+        <SocialSection socialLinks={socialLinks ?? DEFAULT_SOCIAL_LINKS} />
 
         {/* Section #5: Copyright notice */}
-        <CopyrightSection copyrightYear={copyrightYear} />
+        <CopyrightSection
+          copyrightYear={copyrightYear}
+          privacy={t.footer.privacy}
+          terms={t.footer.terms}
+        />
       </div>
     </footer>
   );
@@ -127,18 +132,24 @@ function SocialSection({ socialLinks }: SocialSectionProps) {
  */
 interface CopyrightSectionProps {
   copyrightYear: string;
+  privacy: string;
+  terms: string;
 }
 
-function CopyrightSection({ copyrightYear }: CopyrightSectionProps) {
+function CopyrightSection({
+  copyrightYear,
+  privacy,
+  terms,
+}: CopyrightSectionProps) {
   return (
     <p className="text-center text-xs text-foreground opacity-70">
       © {copyrightYear}{" "}
       <a href="#" className="hover:opacity-100 transition-opacity">
-        Privacy
+        {privacy}
       </a>{" "}
       -{" "}
       <a href="#" className="hover:opacity-100 transition-opacity">
-        Terms
+        {terms}
       </a>
     </p>
   );
