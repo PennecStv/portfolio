@@ -2,7 +2,7 @@
 
 "use client";
 import LoadingScreen from "@/components/LoadingScreen";
-import { DefaultStyle, Divider, FieldLabel, RequiredFieldLabel } from "@/app/components/ContactForm";
+import { DefaultStyle, Divider, FieldLabel } from "@/app/components/ContactForm";
 
 export default function Contact() {
   return (
@@ -30,7 +30,7 @@ export default function Contact() {
             encType="multipart/form-data"
           >
             <div className="grid gap-6 sm:grid-cols-3">
-              <RequiredFieldLabel label="Civilité">
+              <FieldLabel label="Civilité" required>
                 <select
                   className={DefaultStyle({ other: "w-min" })} 
                   name="title"
@@ -42,9 +42,9 @@ export default function Contact() {
                   <option value="mrs">Mme</option>
                   <option value="other">Autre</option>
                 </select>
-              </RequiredFieldLabel>
+              </FieldLabel>
 
-              <RequiredFieldLabel label="Prénom">
+              <FieldLabel label="Prénom" required>
                 <input
                   className={DefaultStyle({})}
                   type="text"
@@ -61,8 +61,8 @@ export default function Contact() {
                   autoComplete="firstname"
                   required
                 />
-              </RequiredFieldLabel>
-              <RequiredFieldLabel label="Nom">
+              </FieldLabel>
+              <FieldLabel label="Nom" required>
                 <input
                   className={DefaultStyle({})}
                   type="text"
@@ -79,7 +79,7 @@ export default function Contact() {
                   autoComplete="lastname"
                   required
                 />
-              </RequiredFieldLabel>
+              </FieldLabel>
 
               <FieldLabel label="Entreprise">
                 <input
@@ -102,7 +102,7 @@ export default function Contact() {
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
-              <RequiredFieldLabel label="Email">
+              <FieldLabel label="Email" required>
                 <input
                   className={DefaultStyle({})}
                   type="email"
@@ -119,7 +119,7 @@ export default function Contact() {
                   autoComplete="email"
                   required
                 />
-              </RequiredFieldLabel>
+              </FieldLabel>
               
               <FieldLabel label="Téléphone">
                 <input
@@ -141,7 +141,7 @@ export default function Contact() {
             </div>
 
             <div className="overflow-hidden border-2 border-foreground bg-transparent transition-colors focus-within:border-secondary rounded-xl">
-              <RequiredFieldLabel label="Objet" className="px-4 pt-3">
+              <FieldLabel label="Objet" required className="px-4 pt-3">
                 <input
                   className="min-h-12 border-0 bg-transparent px-0 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
                   type="text"
@@ -157,11 +157,11 @@ export default function Contact() {
                   }}
                   required
                 />
-              </RequiredFieldLabel>
+              </FieldLabel>
 
               <Divider size="w-100">  </Divider>
 
-              <RequiredFieldLabel label="Message" className="px-4 pb-3 pt-3">
+              <FieldLabel label="Message" required className="px-4 pb-3 pt-3">
                 <textarea
                   className="min-h-40 resize-y border-0 bg-transparent px-0 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
                   name="message"
@@ -176,7 +176,7 @@ export default function Contact() {
                   }}
                   required
                 />
-              </RequiredFieldLabel>
+              </FieldLabel>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">

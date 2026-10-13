@@ -22,45 +22,38 @@ export const Divider = ({ size }: {size: string}) => {
     );
 };
 
+type FieldLabelProps = {
+    label: string;
+    children: React.ReactNode;
+    className?: string;
+    required?: boolean;
+} & React.LabelHTMLAttributes<HTMLLabelElement>;
 /**
- * A field label component.
+ * A field label component, using the FieldLabelProps type.
  * @param label The label text.
+ * @param required Whether the field is required.
  * @param children The child elements.
  * @param className The class name.
  * @param props The remaining props.
  * @returns The field label component.
  */
-export function FieldLabel({ label, children, className, ...props }: { label: string; children: React.ReactNode } & React.LabelHTMLAttributes<HTMLLabelElement>) {
-  return (
-    <label 
-      className={`flex flex-col gap-2 text-lg font-medium ${className ?? ''}`} 
-      {...props}
-    >
-        {label}
-        {children}
-    </label>
-  );
-}
-
-/**
- * A required field label component. Same as FieldLabel
- * but with a red asterisk (client side) to indicate that the field is required.
- * @param label The label text.
- * @param children The child elements.
- * @param className The class name.
- * @param props The remaining props. 
- * @returns The required field label component.
- */
-export function RequiredFieldLabel({ label, children, className, ...props }: { label: string; children: React.ReactNode } & React.LabelHTMLAttributes<HTMLLabelElement>) {
+export function FieldLabel({ 
+  label, 
+  required = false,
+  children, 
+  className, 
+  ...props 
+}: FieldLabelProps) {
   return (
     <label 
       className={`flex flex-col gap-2 text-lg font-medium ${className ?? ''}`} 
       {...props}
     >
       <span>
-        {label} <span className="text-red-500">*</span>
+        {label}
+        {required && <span className="text-red-500">*</span>}
       </span>
-        {children}
+      {children}
     </label>
   );
 }
