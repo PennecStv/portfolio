@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
-/* Default | Dark Theme */
-[data-theme="theme-1"] {
+/* Light Theme */
+:root {
   --primary-color: #ff7e20;
   --secondary-color: #e5642e;
   --sand-yellow: #fedb85;
@@ -9,7 +9,14 @@
   --wood-brown: #62392c;
   --sky-blue: #243364;
   --lavender: #221d3d;
+  --background: #fff8ec;
+  color-scheme: light;
+}
+
+/* Dark Theme */
+.dark {
   --background: #000000;
+  color-scheme: dark;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
