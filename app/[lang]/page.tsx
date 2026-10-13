@@ -35,13 +35,6 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image
-                className="dark:invert"
-                src="/vercel.svg"
-                alt={t.home.vercelLogo}
-                width={16}
-                height={16}
-              />
               {t.home.deploy}
             </a>
             <a
