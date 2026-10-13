@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "A propos",
+    "projects": "Projets",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Bienvenue sur mon portfolio",
+    "description": "Decouvrez mes projets et mon parcours.",
+    "templates": "Modeles",
+    "learning": "Centre d'apprentissage",
+    "deploy": "Deployer maintenant",
+    "documentation": "Documentation",
+    "nextLogo": "Logo Next.js",
+    "vercelLogo": "Logo Vercel"
+  },
+  "footer": {
+    "privacy": "Confidentialite",
+    "terms": "Conditions"
+  }
+}
