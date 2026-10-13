@@ -10,12 +10,16 @@
   --sky-blue: #243364;
   --lavender: #221d3d;
   --background: #fff8ec;
+  --foreground: #000000;
+  --secondary: var(--wood-brown);
   color-scheme: light;
 }
 
 /* Dark Theme */
 .dark {
   --background: #000000;
+  --foreground: var(--primary-color);
+  --secondary: var(--sand-yellow);
   color-scheme: dark;
 }
 
@@ -23,17 +27,30 @@
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--primary-color);
+  --color-foreground: var(--foreground);
   --color-primary: var(--ocean-blue);
-  --color-secondary: var(--sand-yellow);
+  --color-secondary: var(--secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
-  color: var(--primary-color);
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Theme switch fade (see ThemeToggle): same timing for every element */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition-property:
+    background-color, color, border-color, fill, stroke, filter, opacity,
+    transform !important;
+  transition-duration: 300ms !important;
+  transition-timing-function: ease-out !important;
+  transition-delay: 0s !important;
 }
 
 @keyframes icon-in {

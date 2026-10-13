@@ -16,7 +16,7 @@ export default function Navbar() {
   const { locale, t } = useI18n();
 
   return (
-    <header className="border-b-4 border-b-[var(--primary-color)]">
+    <header className="border-b-4 border-b-foreground">
       <nav className="mx-auto flex items-center justify-between px-16 py-6">
         <div>
           <Link href="/" className="text-xl font-semibold">
@@ -29,7 +29,7 @@ export default function Navbar() {
               <li key={href}>
                 <Link
                   href={`/${locale}${href === "/" ? "" : href}`}
-                  className="text-m text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+                  className="text-m text-zinc-600 transition-colors hover:text-zinc-950 dark:text-foreground dark:hover:text-secondary"
                 >
                   {t.nav[key]}
                 </Link>

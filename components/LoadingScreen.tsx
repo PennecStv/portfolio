@@ -15,9 +15,12 @@ export default function LoadingScreen() {
       return () => clearTimeout(skip);
     }
 
-    window.localStorage.setItem(LOADING_SCREEN_SHOWN_KEY, "true");
-
-    const t0 = setTimeout(() => setPhase("visible"), 50);
+    // Mark as shown only once the screen actually appears: in dev, Strict Mode
+    // runs this effect twice and would otherwise skip it on the second run
+    const t0 = setTimeout(() => {
+      window.localStorage.setItem(LOADING_SCREEN_SHOWN_KEY, "true");
+      setPhase("visible");
+    }, 50);
     const t1 = setTimeout(() => setPhase("exit-image"), 1400);
     const t2 = setTimeout(() => setPhase("exit-screen"), 2100);
     const t3 = setTimeout(() => setPhase("done"), 2900);

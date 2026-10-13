@@ -14,6 +14,10 @@ function MoonIcon() {
 
 const subscribe = () => () => {};
 
+// Keep in sync with the .theme-transition duration in globals.css
+const THEME_TRANSITION_MS = 300;
+let transitionTimeout: number | undefined;
+
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   // The theme is only known on the client, so render nothing theme-dependent on the server
@@ -24,7 +28,25 @@ export default function ThemeToggle() {
   );
   const isDark = mounted && resolvedTheme === "dark";
 
-  const toggle = () => setTheme(isDark ? "light" : "dark");
+  const toggle = () => {
+    const next = isDark ? "light" : "dark";
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (!reduceMotion) {
+      // Give every element the same color transition while the theme switches
+      const root = document.documentElement;
+      root.classList.add("theme-transition");
+      window.clearTimeout(transitionTimeout);
+      transitionTimeout = window.setTimeout(
+        () => root.classList.remove("theme-transition"),
+        THEME_TRANSITION_MS,
+      );
+    }
+
+    setTheme(next);
+  };
 
   return (
     <button

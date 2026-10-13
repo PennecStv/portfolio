@@ -25,7 +25,7 @@ export default function Footer({
   ];
 
   return (
-    <footer className="w-full bg-black text-foreground py-12 px-4">
+    <footer className="w-full bg-background text-foreground py-12 px-4">
       {/* Container for max-width and centered content */}
       <div className="max-w-4xl mx-auto flex flex-col gap-8">
         {/* Section #1: Top decoration (line + diamond) */}
@@ -115,7 +115,7 @@ function SocialSection({ socialLinks }: SocialSectionProps) {
           href={social.href}
           title={social.label}
           className="inline-flex items-center justify-center w-10 h-10 border-2 border-foreground rounded-full 
-                               hover:bg-foreground hover:text-black transition-colors"
+                               hover:bg-foreground hover:text-background transition-colors"
         >
           {/* Icon would go here, placeholder for now :D */}
           <span className="text-xs font-semibold">

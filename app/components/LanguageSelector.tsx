@@ -63,7 +63,7 @@ export default function LanguageSelector() {
     <div ref={ref} className="relative">
       <button
         onClick={toggle}
-        className="flex items-center gap-1.5 rounded-lg border border-[var(--primary-color)] border-b-4 px-3 py-1.5 text-sm text-zinc-700 transition-all duration-200 hover:bg-zinc-50 active:scale-95 dark:text-zinc-300 dark:hover:bg-zinc-800"
+        className="flex items-center gap-1.5 rounded-lg border border-foreground border-b-4 px-3 py-1.5 text-sm text-zinc-700 transition-all duration-200 hover:bg-zinc-50 active:scale-95 dark:text-foreground dark:hover:bg-foreground/10"
         aria-haspopup="listbox"
         aria-expanded={open}
       >
@@ -80,7 +80,7 @@ export default function LanguageSelector() {
       {visible && (
         <ul
           role="listbox"
-          className={`absolute right-0 top-full z-10 mt-1.5 min-w-full overflow-hidden rounded-lg border border-[var(--primary-color)] bg-white shadow-md transition-all duration-200 origin-top-right dark:bg-zinc-900 ${
+          className={`absolute right-0 top-full z-10 mt-1.5 min-w-full overflow-hidden rounded-lg border border-foreground bg-white shadow-md transition-all duration-200 origin-top-right dark:bg-black ${
             open
               ? "opacity-100 scale-100 translate-y-0"
               : "opacity-0 scale-95 -translate-y-1"
@@ -107,8 +107,8 @@ export default function LanguageSelector() {
                   }}
                   className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-sm transition-colors duration-150 ${
                     isSelected
-                      ? "bg-zinc-50 font-semibold text-zinc-950 dark:bg-zinc-800 dark:text-zinc-50"
-                      : "text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                      ? "bg-zinc-50 font-semibold text-zinc-950 dark:bg-foreground/15 dark:text-foreground"
+                      : "text-zinc-600 hover:bg-zinc-50 dark:text-foreground/80 dark:hover:bg-foreground/10"
                   }`}
                 >
                   <Image
@@ -129,7 +129,7 @@ export default function LanguageSelector() {
                       strokeWidth="3"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="ml-auto text-zinc-950 dark:text-zinc-50"
+                      className="ml-auto text-zinc-950 dark:text-foreground"
                       aria-hidden="true"
                     >
                       <path d="M20 6 9 17l-5-5" />
