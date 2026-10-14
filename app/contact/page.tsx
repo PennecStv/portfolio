@@ -168,7 +168,7 @@ export default function Contact() {
                 />
               </FieldLabel>
 
-              <Divider size="w-100">  </Divider>
+              <Divider size="w-100" />
 
               <FieldLabel label="Message" required className="px-4 pb-3 pt-3">
                 <textarea

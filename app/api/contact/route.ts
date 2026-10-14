@@ -1,5 +1,10 @@
 /**
  * The API route for handling contact form submissions.
- * To be defined when the contact form is submitted. 
- * This will be the API route that handles the form submission.
+ * Email delivery will be implemented here.
  */
+export async function POST() {
+	return Response.json(
+		{ message: "Contact form handling is not implemented yet." },
+		{ status: 501 },
+	);
+}
