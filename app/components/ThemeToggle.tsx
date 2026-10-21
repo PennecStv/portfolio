@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useI18n } from "../i18n";
 
 function SunIcon() {
   return <Image src="/sun.svg" alt="Sun Light Mode" width={40} height={40} />;
@@ -12,6 +13,7 @@ function MoonIcon() {
 }
 
 export default function ThemeToggle() {
+  const { t } = useI18n();
   const [isDark, setIsDark] = useState(() => {
     if (typeof window === "undefined") return false;
     const stored = localStorage.getItem("theme");
@@ -36,7 +38,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label={isDark ? "Passer en mode clair" : "Passer en mode sombre"}
+      aria-label={isDark ? t.nav.themeSwitch.light : t.nav.themeSwitch.dark }
       className="relative flex h-10 w-10 items-center justify-center rounded-lg transition-[transform,background-color] duration-150  active:scale-90"
     >
       <span

@@ -1,22 +1,26 @@
 {
   "nav": {
     "home": "Accueil",
-    "about": "A propos",
+    "about": "À propos",
     "projects": "Projets",
-    "contact": "Contact"
+    "contact": "Contact",
+    "themeSwitch": {
+      "light": "Passer en mode clair",
+      "dark": "Passer en mode sombre"
+    }
   },
   "home": {
     "title": "Bienvenue sur mon portfolio",
-    "description": "Decouvrez mes projets et mon parcours.",
-    "templates": "Modeles",
+    "description": "Découvrez mes projets et mon parcours.",
+    "templates": "Modèles",
     "learning": "Centre d'apprentissage",
-    "deploy": "Deployer maintenant",
+    "deploy": "Déployer maintenant",
     "documentation": "Documentation",
     "nextLogo": "Logo Next.js",
     "vercelLogo": "Logo Vercel"
   },
   "footer": {
-    "privacy": "Confidentialite",
+    "privacy": "Confidentialité",
     "terms": "Conditions"
   }
 }
