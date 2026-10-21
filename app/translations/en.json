@@ -3,7 +3,11 @@
     "home": "Home",
     "about": "About",
     "projects": "Projects",
-    "contact": "Contact"
+    "contact": "Contact",
+    "themeSwitch": {
+      "light": "Switch to light mode",
+      "dark": "Switch to dark mode"
+    }
   },
   "home": {
     "title": "Welcome to my portfolio",

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { useI18n } from "../i18n";
 
 function SunIcon() {
   return <Image src="/sun.svg" alt="Sun Light Mode" width={40} height={40} />;
@@ -19,6 +21,7 @@ const THEME_TRANSITION_MS = 300;
 let transitionTimeout: number | undefined;
 
 export default function ThemeToggle() {
+  const { t } = useI18n();
   const { resolvedTheme, setTheme } = useTheme();
   // The theme is only known on the client, so render nothing theme-dependent on the server
   const mounted = useSyncExternalStore(
@@ -52,7 +55,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       disabled={!mounted}
-      aria-label={isDark ? "Passer en mode clair" : "Passer en mode sombre"}
+      aria-label={isDark ? t.nav.themeSwitch.light : t.nav.themeSwitch.dark }
       className="relative flex h-10 w-10 items-center justify-center rounded-lg transition-[transform,background-color] duration-150  active:scale-90"
     >
       {/* Moon is shown in light mode: click it to switch to dark */}
