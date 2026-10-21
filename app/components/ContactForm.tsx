@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ContactSocial, FieldLabelProps, KnobPosition } from "../types/contact";
+import { ContactSocial, FieldLabelProps, KnobPosition } from "@/app/types/contact";
 
 /**
  * Returns the default style for a form input.
