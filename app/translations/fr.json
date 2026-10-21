@@ -22,5 +22,40 @@
   "footer": {
     "privacy": "Confidentialité",
     "terms": "Conditions"
+  },
+  "contact": {
+    "title": "Me contacter",
+    "callMeOn": "Joignable au",
+    "description": "Vous pouvez également m'écrire directement grâce au formulaire ci-dessous.",
+    "subdescription": "Les champs obligatoires sont marqués d'un astérisque",
+    "openProfileLink": "Ouvrir le profil",
+    "openProfileAriaLabel": "Choisir un réseau social",
+    "honoricLabel": "Civilité",
+    "honoricValue": {
+      "mr": "M.",
+      "mrs": "Mme",
+      "ms": "Mlle",
+      "dr": "Dr.",
+      "prof": "Prof.",
+      "other": "Autre"
+    },
+    "firstNameLabel": "Prénom",
+    "firstNamePlaceholder": "Votre prénom",
+    "lastNameLabel": "Nom",
+    "lastNamePlaceholder": "Votre nom",
+    "companyLabel": "Entreprise",
+    "companyPlaceholder": "Nom de votre entreprise",
+    "emailLabel": "Email",
+    "emailPlaceholder": "vous@exemple.com",
+    "phoneLabel": "Téléphone",
+    "phonePlaceholder": "Votre numéro de téléphone",
+    "subjectLabel": "Objet",
+    "subjectPlaceholder": "L'objet de votre message",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Votre message ...",
+    "attachmentsLabel": "Pièce(s) jointe(s)",
+    "submitButton": "Envoyer le message",
+    "successMessage": "Merci pour votre message ! Je vous répondrai au plus vite.",
+    "errorMessage": "Une erreur s'est produite. Veuillez réessayer plus tard."
   }
 }

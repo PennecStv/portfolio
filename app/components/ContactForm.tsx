@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { ContactSocial, FieldLabelProps, KnobPosition } from "@/app/types/contact";
+import { useI18n } from "@/app/i18n";
 
 /**
  * Returns the default style for a form input.
@@ -90,6 +91,8 @@ function offsetForAngle(angle: number): KnobPosition {
 }
 
 export function SocialRotaryButton() {
+  const { t } = useI18n();
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [position, setPosition] = useState(() => offsetForAngle(-120));
   const isDragging = useRef(false);
@@ -210,7 +213,7 @@ export function SocialRotaryButton() {
         rel="noreferrer"
         className="text-sm text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
       >
-        Ouvrir le profil
+        { t.contact.openProfileLink }
       </a>
     </div>
   );

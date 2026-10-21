@@ -2,18 +2,20 @@
 
 import LoadingScreen from "@/components/LoadingScreen";
 import { DefaultStyle, Divider, FieldLabel, SocialRotaryButton } from "@/app/components/ContactForm";
+import { useI18n } from "@/app/i18n";
 
 export default function Contact() {
+  const { t } = useI18n();
   return (
     <>
       <LoadingScreen />
       <div className="flex flex-1 flex-col bg-background font-sans">
         <main className="mx-auto w-full max-w-3xl px-6 py-16 sm:px-10 sm:py-24">
           <h1 className="text-5xl font-semibold leading-tight sm:text-7xl">
-            Me contacter
+            { t.contact.title }
           </h1>
           <p className="mt-6 max-w-2xl text-xl leading-8 text-secondary sm:text-2xl">
-            Joignable au +33 1 23 45 67 89 📞 
+            { t.contact.callMeOn } +33 1 23 45 67 89 📞 
           </p>
 
           <div className="mt-6 flex items-center gap-4">
@@ -21,13 +23,12 @@ export default function Contact() {
           </div>
 
           <p className="mt-6 max-w-2xl text-xl leading-8 text-secondary sm:text-2xl">
-            Vous pouvez également m&apos;écrire
-            directement grâce au formulaire ci-dessous.
+            { t.contact.description }
           </p>
           <p className="mt-6 max-w-2xl text-xl leading-4 text-secondary sm:text-md">
-          Les champs marqués d&apos;un astérisque (
+          { t.contact.subdescription } (
             <span className="text-foreground text-red-500">*</span>
-            ) sont obligatoires.  
+            ).  
           </p>
 
           <form
@@ -37,7 +38,7 @@ export default function Contact() {
             encType="multipart/form-data"
           >
             <div className="grid gap-6 sm:grid-cols-3">
-              <FieldLabel label="Civilité" required>
+              <FieldLabel label={ t.contact.honoricLabel } required>
                 <select
                   className={DefaultStyle({ other: "w-min" })} 
                   name="title"
@@ -45,42 +46,45 @@ export default function Contact() {
                   required
                   defaultValue="other"
                 >
-                  <option value="mr">M.</option>
-                  <option value="mrs">Mme</option>
-                  <option value="other">Autre</option>
+                  <option value="mr">{ t.contact.honoricValue.mr }</option>
+                  <option value="mrs">{ t.contact.honoricValue.mrs }</option>
+                  <option value="ms">{ t.contact.honoricValue.ms }</option>
+                  <option value="dr">{ t.contact.honoricValue.dr }</option>
+                  <option value="prof">{ t.contact.honoricValue.prof }</option>
+                  <option value="other">{ t.contact.honoricValue.other }</option>
                 </select>
               </FieldLabel>
 
-              <FieldLabel label="Prénom" required>
+              <FieldLabel label={ t.contact.firstNameLabel } required>
                 <input
                   className={DefaultStyle({})}
                   type="text"
                   name="firstname"
-                  placeholder="Votre prénom"
+                  placeholder={ t.contact.firstNamePlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "Votre prénom";
+                      event.currentTarget.placeholder = t.contact.firstNamePlaceholder;
                     }
                   }}
                   autoComplete="firstname"
                   required
                 />
               </FieldLabel>
-              <FieldLabel label="Nom" required>
+              <FieldLabel label={ t.contact.lastNameLabel } required>
                 <input
                   className={DefaultStyle({})}
                   type="text"
                   name="lastname"
-                  placeholder="Votre nom"
+                  placeholder={ t.contact.lastNamePlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "Votre nom";
+                      event.currentTarget.placeholder = t.contact.lastNamePlaceholder;
                     }
                   }}
                   autoComplete="lastname"
@@ -88,18 +92,18 @@ export default function Contact() {
                 />
               </FieldLabel>
 
-              <FieldLabel label="Entreprise">
+              <FieldLabel label={ t.contact.companyLabel }>
                 <input
                   className={DefaultStyle({ other: "w-lg" })}
                   type="text"
                   name="firm"
-                  placeholder="Nom de votre entreprise"
+                  placeholder={ t.contact.companyPlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "Nom de votre entreprise";
+                      event.currentTarget.placeholder = t.contact.companyPlaceholder;
                     }
                   }}
                   autoComplete="organization"
@@ -109,18 +113,18 @@ export default function Contact() {
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
-              <FieldLabel label="Email" required>
+              <FieldLabel label={ t.contact.emailLabel } required>
                 <input
                   className={DefaultStyle({})}
                   type="email"
                   name="email"
-                  placeholder="vous@exemple.com"
+                  placeholder={ t.contact.emailPlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "vous@exemple.com";
+                      event.currentTarget.placeholder = t.contact.emailPlaceholder;
                     }
                   }}
                   autoComplete="email"
@@ -128,12 +132,12 @@ export default function Contact() {
                 />
               </FieldLabel>
               
-              <FieldLabel label="Téléphone">
+              <FieldLabel label={ t.contact.phoneLabel }>
                 <input
                   className={DefaultStyle({})}
                   type="text"
                   name="phone"
-                  placeholder="Votre numéro de téléphone"
+                  placeholder={ t.contact.phonePlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "01 23 45 67 89";
                   }}
@@ -148,18 +152,18 @@ export default function Contact() {
             </div>
 
             <div className="overflow-hidden border-2 border-foreground bg-transparent transition-colors focus-within:border-secondary rounded-xl">
-              <FieldLabel label="Objet" required className="px-4 pt-3">
+              <FieldLabel label={ t.contact.subjectLabel } required className="px-4 pt-3">
                 <input
                   className="min-h-12 border-0 bg-transparent px-0 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
                   type="text"
                   name="subject"
-                  placeholder="L'objet de votre message"
+                  placeholder={ t.contact.subjectPlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "L'objet de votre message";
+                      event.currentTarget.placeholder = t.contact.subjectPlaceholder;
                     }
                   }}
                   required
@@ -168,17 +172,17 @@ export default function Contact() {
 
               <Divider size="w-100" />
 
-              <FieldLabel label="Message" required className="px-4 pb-3 pt-3">
+              <FieldLabel label={ t.contact.messageLabel } required className="px-4 pb-3 pt-3">
                 <textarea
                   className="min-h-40 resize-y border-0 bg-transparent px-0 py-1 text-lg text-foreground italic outline-none placeholder:text-foreground/60"
                   name="message"
-                  placeholder="Votre message ..."
+                  placeholder={ t.contact.messagePlaceholder }
                   onFocus={(event) => {
                     event.currentTarget.placeholder = "";
                   }}
                   onBlur={(event) => {
                     if (!event.currentTarget.value) {
-                      event.currentTarget.placeholder = "Votre message ...";
+                      event.currentTarget.placeholder = t.contact.messagePlaceholder;
                     }
                   }}
                   required
@@ -187,7 +191,7 @@ export default function Contact() {
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
-              <FieldLabel label="Pièce(s) jointe(s)">
+              <FieldLabel label={ t.contact.attachmentsLabel }>
                 <input
                   className={DefaultStyle({})}
                   type="file"
@@ -202,7 +206,7 @@ export default function Contact() {
               className="min-h-12 w-fit bg-foreground px-6 py-3 text-lg font-semibold text-background transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-secondary"
               type="submit"
             >
-              Envoyer le message
+              { t.contact.submitButton }
             </button>
           </form>
         </main>

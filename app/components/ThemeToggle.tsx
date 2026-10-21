@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { useI18n } from "../i18n";
 
 function SunIcon() {
