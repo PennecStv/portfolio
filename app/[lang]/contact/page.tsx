@@ -1,5 +1,3 @@
-// app/contact/page.tsx
-
 "use client";
 
 import LoadingScreen from "@/components/LoadingScreen";
