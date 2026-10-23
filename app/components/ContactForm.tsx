@@ -64,9 +64,9 @@ export function FieldLabel({
  */
 
 const CONTACT_SOCIALS: ContactSocial[] = [
-  { label: "GitHub", href: "https://github.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "Mail", href: "https://gmail.com" },
+  { label: "GitHub", href: "https://github.com", openInNewTab: true },
+  { label: "LinkedIn", href: "https://linkedin.com", openInNewTab: true },
+  { label: "Mail", href: "myMail@domain.com", openInNewTab: false },
 ];
 
 const MAX_OFFSET = 33;
@@ -126,7 +126,7 @@ function SocialWaveform({ position, selectedIndex, isDragging }: SocialWaveformP
 
   return (
     <div
-      className="flex-col min-h-36 min-w-0 flex-1 items-center rounded-xl border-2 border-foreground/50 px-4 py-3"
+      className="flex-col min-h-40 min-w-0 flex-1 items-center rounded-xl border-2 border-foreground/50 px-4 py-3"
       aria-label="Social selection waveform"
     >
       <p className="text-center items-center text-3xl font-medium text-foreground italic" aria-live="polite">
@@ -135,7 +135,7 @@ function SocialWaveform({ position, selectedIndex, isDragging }: SocialWaveformP
 
       <svg
         className="h-full min-h-20 w-full overflow-visible text-secondary"
-        viewBox="0 0 800 100"
+        viewBox="0 0 800 80"
         role="img"
         aria-hidden="true"
         preserveAspectRatio="none"
@@ -237,6 +237,19 @@ export function SocialRotaryButton() {
       selectIndex(maximumIndex);
     }
   }
+  /* I define here the actionto do if openInNewTab is true or false; 
+   * if true it opens the link in a new tab, 
+   * if false it copies the link to clipboard
+   */
+  const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (!selectedSocial.openInNewTab) {
+      event.preventDefault();
+      navigator.clipboard.writeText(selectedSocial.href)
+        .then(() => {
+          alert(t.contact.copyProfileLink); 
+        });
+    }
+  };
 
   return (
     <div className="flex items-center gap-4">
@@ -270,18 +283,17 @@ export function SocialRotaryButton() {
 
         </div>
 
-        {/* <p className="text-center text-lg font-medium text-foreground" aria-live="polite">
-          {selectedSocial.label}
-        </p> */}
-
+        {/* If link openInNewTab is true, opens the link when clicked.
+        If false, copies the link to clipboard */}
+        
         <a
           href={selectedSocial.href}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-center text-sm text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
+          onClick={handleLinkClick}
+          className="flex items-center justify-center text-sm py-2 text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
         >
-          { t.contact.openProfileLink }
+          { selectedSocial.openInNewTab ? t.contact.openProfileLink : t.contact.copyProfileLink }
         </a>
+        
       </div>
 
       <SocialWaveform

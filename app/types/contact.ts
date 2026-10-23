@@ -16,6 +16,7 @@ export interface FieldLabelProps extends React.LabelHTMLAttributes<HTMLLabelElem
 export interface ContactSocial {
     label: string;
     href: string;
+    openInNewTab: boolean;
 };
 
 /**

@@ -29,6 +29,7 @@
     "description": "Vous pouvez également m'écrire directement grâce au formulaire ci-dessous.",
     "subdescription": "Les champs obligatoires sont marqués d'un astérisque",
     "openProfileLink": "Ouvrir le profil",
+    "copyProfileLink": "Copier",
     "openProfileAriaLabel": "Choisir un réseau social",
     "honoricLabel": "Civilité",
     "honoricValue": {

@@ -29,6 +29,7 @@
     "description": "You can also reach out to me directly through the form below.",
     "subdescription": "Required fields are marked with an asterisk",
     "openProfileLink": "Open profile",
+    "copyProfileLink": "Copy",
     "openProfileAriaLabel": "Choose a social network",
     "honoricLabel": "Honorific",
     "honoricValue": {
