@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ContactSocial, FieldLabelProps, KnobPosition } from "@/app/types/contact";
 import { useI18n } from "@/app/i18n";
 
@@ -94,44 +94,94 @@ function offsetForAngle(angle: number): KnobPosition {
 interface SocialWaveformProps {
   position: KnobPosition;
   selectedIndex: number;
-  isDragging: boolean;
 }
 
-function SocialWaveform({ position, selectedIndex, isDragging }: SocialWaveformProps) {
+function SocialWaveform({ position, selectedIndex }: SocialWaveformProps) {
   const selectedSocial = CONTACT_SOCIALS[selectedIndex];
+  const [animationTime, setAnimationTime] = useState(0);
+  const [copyFeedback, setCopyFeedback] = useState<"copied" | "failed" | null>(null);
+  const copyFeedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    let animationFrame = 0;
+    const startTime = performance.now();
+
+    const animate = (time: number) => {
+      setAnimationTime((time - startTime) / 1000);
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+   function showCopyFeedback(feedback: "copied" | "failed") {
+    if (copyFeedbackTimerRef.current) {
+      clearTimeout(copyFeedbackTimerRef.current);
+    }
+
+    setCopyFeedback(feedback);
+    copyFeedbackTimerRef.current = setTimeout(() => {
+      setCopyFeedback(null);
+      copyFeedbackTimerRef.current = null;
+    }, 2500);
+  }
+
+  const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (!selectedSocial.openInNewTab) {
+      event.preventDefault();
+
+      if (!navigator.clipboard) {
+        showCopyFeedback("failed");
+        return;
+      }
+
+      navigator.clipboard.writeText(selectedSocial.href)
+        .then(() => showCopyFeedback("copied"))
+        .catch(() => showCopyFeedback("failed"));
+    }
+  };
+
   const path = useMemo(() => {
     const width = 800;
     const centerY = 60;
     const pointCount = 80;
-    const angle = Math.atan2(position.x, -position.y);
+    const distance = Math.hypot(position.x, position.y);
+    const angle = distance === 0
+      ? 0
+      : clamp(Math.atan2(position.x, -position.y), -((2 * Math.PI) / 3), (2 * Math.PI) / 3);
     const dragAmount = clamp(Math.hypot(position.x, position.y) / MAX_OFFSET, 0, 1);
-    const preset = [
-      { amplitude: 18, cycles: 1.5, phase: 0 },
-      { amplitude: 12, cycles: 2.5, phase: Math.PI / 4 },
-    ][selectedIndex] ?? { amplitude: 15, cycles: 2, phase: 0 };
-    const amplitude = isDragging
-      ? 8 + dragAmount * (10 + Math.abs(Math.sin(angle)) * 12)
-      : preset.amplitude;
-    const cycles = isDragging
-      ? 1.5 + ((angle + (2 * Math.PI) / 3) / (4 * Math.PI / 3)) * 2
-      : preset.cycles;
-    const phase = isDragging ? angle : preset.phase;
+    const amplitude = 8 + dragAmount * (10 + Math.abs(Math.sin(angle)) * 12);
+    const cycles = 1.5 + ((angle + (2 * Math.PI) / 3) / (4 * Math.PI / 3)) * 2;
+    const animatedPhase = angle + animationTime * 1.5;
 
     return Array.from({ length: pointCount }, (_, index) => {
       const x = (index / (pointCount - 1)) * width;
-      const y = centerY + Math.sin((index / (pointCount - 1)) * cycles * 2 * Math.PI + phase) * amplitude;
+      const y = centerY + Math.sin((index / (pointCount - 1)) * cycles * 2 * Math.PI + animatedPhase) * amplitude;
       return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
     }).join(" ");
-  }, [isDragging, position, selectedIndex]);
+  }, [animationTime, position]);
 
   return (
     <div
       className="flex-col min-h-40 min-w-0 flex-1 items-center rounded-xl border-2 border-foreground/50 px-4 py-3"
       aria-label="Social selection waveform"
     >
-      <p className="text-center items-center text-3xl font-medium text-foreground italic" aria-live="polite">
-          {selectedSocial.label}
-        </p>
+      <span className="flex items-center justify-center text-sm font-medium text-foreground" aria-live="polite">
+        &gt;
+
+          <a
+            href={selectedSocial.href}
+            target={selectedSocial.openInNewTab ? "_blank" : undefined}
+            rel={selectedSocial.openInNewTab ? "noreferrer" : undefined}
+            onClick={handleLinkClick}
+            className="px-2 text-2xl text-center items-center text-secondary font-semibold italic"
+          >
+            { selectedSocial.label }
+          </a> 
+        &lt;
+      </span>
 
       <svg
         className="h-full min-h-20 w-full overflow-visible text-secondary"
@@ -158,10 +208,19 @@ export function SocialRotaryButton() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [position, setPosition] = useState(() => offsetForAngle(-120));
-  const [isDragging, setIsDragging] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState<"copied" | "failed" | null>(null);
   const draggingRef = useRef(false);
+  const copyFeedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const maximumIndex = CONTACT_SOCIALS.length - 1;
   const selectedSocial = CONTACT_SOCIALS[selectedIndex];
+
+  useEffect(() => {
+    return () => {
+      if (copyFeedbackTimerRef.current) {
+        clearTimeout(copyFeedbackTimerRef.current);
+      }
+    };
+  }, []);
 
   function selectIndex(index: number) {
     const nextIndex = clamp(index, 0, maximumIndex);
@@ -173,7 +232,6 @@ export function SocialRotaryButton() {
   function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
     event.currentTarget.setPointerCapture(event.pointerId);
     draggingRef.current = true;
-    setIsDragging(true);
     updatePointerPosition(event);
   }
 
@@ -187,7 +245,7 @@ export function SocialRotaryButton() {
 
   function updatePointerPosition(event: React.PointerEvent<HTMLDivElement>) {
     const bounds = event.currentTarget.getBoundingClientRect();
-    // Décalage du pointeur par rapport au centre (les deux cercles ont le même centre)
+    // Cursor offset from the center (both circles have the same center)
     const dx = event.clientX - (bounds.left + bounds.width / 2);
     const dy = event.clientY - (bounds.top + bounds.height / 2);
 
@@ -196,7 +254,7 @@ export function SocialRotaryButton() {
 
     setPosition({ x: dx * scale, y: dy * scale });
 
-    // Zone morte : on garde la sélection précédente tant qu'on est au centre
+    // Dead zone: keep previous selection while in the center
     if (distance < DEAD_ZONE) {
       return;
     }
@@ -213,7 +271,6 @@ export function SocialRotaryButton() {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
     draggingRef.current = false;
-    setIsDragging(false);
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -241,13 +298,30 @@ export function SocialRotaryButton() {
    * if true it opens the link in a new tab, 
    * if false it copies the link to clipboard
    */
+  function showCopyFeedback(feedback: "copied" | "failed") {
+    if (copyFeedbackTimerRef.current) {
+      clearTimeout(copyFeedbackTimerRef.current);
+    }
+
+    setCopyFeedback(feedback);
+    copyFeedbackTimerRef.current = setTimeout(() => {
+      setCopyFeedback(null);
+      copyFeedbackTimerRef.current = null;
+    }, 2500);
+  }
+
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!selectedSocial.openInNewTab) {
       event.preventDefault();
+
+      if (!navigator.clipboard) {
+        showCopyFeedback("failed");
+        return;
+      }
+
       navigator.clipboard.writeText(selectedSocial.href)
-        .then(() => {
-          alert(t.contact.copyProfileLink); 
-        });
+        .then(() => showCopyFeedback("copied"))
+        .catch(() => showCopyFeedback("failed"));
     }
   };
 
@@ -286,20 +360,32 @@ export function SocialRotaryButton() {
         {/* If link openInNewTab is true, opens the link when clicked.
         If false, copies the link to clipboard */}
         
-        <a
-          href={selectedSocial.href}
-          onClick={handleLinkClick}
-          className="flex items-center justify-center text-sm py-2 text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
-        >
-          { selectedSocial.openInNewTab ? t.contact.openProfileLink : t.contact.copyProfileLink }
-        </a>
+        <div className="flex items-center justify-center gap-2 py-2">
+          <a
+            href={selectedSocial.href}
+            target={selectedSocial.openInNewTab ? "_blank" : undefined}
+            rel={selectedSocial.openInNewTab ? "noreferrer" : undefined}
+            onClick={handleLinkClick}
+            className="text-sm text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
+          >
+            { selectedSocial.openInNewTab ? t.contact.openProfileLink : t.contact.copyProfileLink }
+          </a>
+          {copyFeedback && (
+            <span
+              className="text-sm text-foreground"
+              role="status"
+              aria-live="polite"
+            >
+              {copyFeedback === "copied" ? t.contact.copiedProfileLink : t.contact.copyProfileLinkFailed}
+            </span>
+          )}
+        </div>
         
       </div>
 
       <SocialWaveform
         position={position}
         selectedIndex={selectedIndex}
-        isDragging={isDragging}
       />
     </div>
   );

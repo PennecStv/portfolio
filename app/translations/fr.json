@@ -30,6 +30,8 @@
     "subdescription": "Les champs obligatoires sont marqués d'un astérisque",
     "openProfileLink": "Ouvrir le profil",
     "copyProfileLink": "Copier",
+    "copiedProfileLink": "Copié !",
+    "copyProfileLinkFailed": "Échec de la copie",
     "openProfileAriaLabel": "Choisir un réseau social",
     "honoricLabel": "Civilité",
     "honoricValue": {

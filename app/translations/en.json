@@ -30,6 +30,8 @@
     "subdescription": "Required fields are marked with an asterisk",
     "openProfileLink": "Open profile",
     "copyProfileLink": "Copy",
+    "copiedProfileLink": "Copied!",
+    "copyProfileLinkFailed": "Copy failed",
     "openProfileAriaLabel": "Choose a social network",
     "honoricLabel": "Honorific",
     "honoricValue": {
