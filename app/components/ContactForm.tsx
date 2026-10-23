@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ContactSocial, FieldLabelProps, KnobPosition } from "@/app/types/contact";
 import { useI18n } from "@/app/i18n";
 
@@ -66,6 +66,7 @@ export function FieldLabel({
 const CONTACT_SOCIALS: ContactSocial[] = [
   { label: "GitHub", href: "https://github.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
+  { label: "Mail", href: "https://gmail.com" },
 ];
 
 const MAX_OFFSET = 33;
@@ -90,12 +91,75 @@ function offsetForAngle(angle: number): KnobPosition {
   };
 }
 
+interface SocialWaveformProps {
+  position: KnobPosition;
+  selectedIndex: number;
+  isDragging: boolean;
+}
+
+function SocialWaveform({ position, selectedIndex, isDragging }: SocialWaveformProps) {
+  const selectedSocial = CONTACT_SOCIALS[selectedIndex];
+  const path = useMemo(() => {
+    const width = 800;
+    const centerY = 60;
+    const pointCount = 80;
+    const angle = Math.atan2(position.x, -position.y);
+    const dragAmount = clamp(Math.hypot(position.x, position.y) / MAX_OFFSET, 0, 1);
+    const preset = [
+      { amplitude: 18, cycles: 1.5, phase: 0 },
+      { amplitude: 12, cycles: 2.5, phase: Math.PI / 4 },
+    ][selectedIndex] ?? { amplitude: 15, cycles: 2, phase: 0 };
+    const amplitude = isDragging
+      ? 8 + dragAmount * (10 + Math.abs(Math.sin(angle)) * 12)
+      : preset.amplitude;
+    const cycles = isDragging
+      ? 1.5 + ((angle + (2 * Math.PI) / 3) / (4 * Math.PI / 3)) * 2
+      : preset.cycles;
+    const phase = isDragging ? angle : preset.phase;
+
+    return Array.from({ length: pointCount }, (_, index) => {
+      const x = (index / (pointCount - 1)) * width;
+      const y = centerY + Math.sin((index / (pointCount - 1)) * cycles * 2 * Math.PI + phase) * amplitude;
+      return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
+    }).join(" ");
+  }, [isDragging, position, selectedIndex]);
+
+  return (
+    <div
+      className="flex-col min-h-36 min-w-0 flex-1 items-center rounded-xl border-2 border-foreground/50 px-4 py-3"
+      aria-label="Social selection waveform"
+    >
+      <p className="text-center items-center text-3xl font-medium text-foreground italic" aria-live="polite">
+          {selectedSocial.label}
+        </p>
+
+      <svg
+        className="h-full min-h-20 w-full overflow-visible text-secondary"
+        viewBox="0 0 800 100"
+        role="img"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+      >
+        <path
+          d={path}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+        />
+      </svg>
+    </div>
+  );
+}
+
 export function SocialRotaryButton() {
   const { t } = useI18n();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [position, setPosition] = useState(() => offsetForAngle(-120));
-  const isDragging = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const draggingRef = useRef(false);
   const maximumIndex = CONTACT_SOCIALS.length - 1;
   const selectedSocial = CONTACT_SOCIALS[selectedIndex];
 
@@ -108,12 +172,13 @@ export function SocialRotaryButton() {
 
   function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
     event.currentTarget.setPointerCapture(event.pointerId);
-    isDragging.current = true;
+    draggingRef.current = true;
+    setIsDragging(true);
     updatePointerPosition(event);
   }
 
   function handlePointerMove(event: React.PointerEvent<HTMLDivElement>) {
-    if (!isDragging.current) {
+    if (!draggingRef.current) {
       return;
     }
 
@@ -147,7 +212,8 @@ export function SocialRotaryButton() {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
-    isDragging.current = false;
+    draggingRef.current = false;
+    setIsDragging(false);
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -173,48 +239,56 @@ export function SocialRotaryButton() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div
-        role="slider"
-        tabIndex={0}
-        aria-label="Choisir un réseau social"
-        aria-valuemin={0}
-        aria-valuemax={maximumIndex}
-        aria-valuenow={selectedIndex}
-        aria-valuetext={selectedSocial.label}
-        className="relative flex h-32 w-32 touch-none select-none items-center justify-center rounded-full border-2 border-foreground/50 bg-background outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-secondary cursor-grab active:cursor-grabbing"
-        onKeyDown={handleKeyDown}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={stopDragging}
-        onPointerCancel={stopDragging}
-      >
-        { /* middle circle */}
-        <div className="absolute inset-2 rounded-full border border-foreground/30">
-          <span 
-            className="absolute flex left-1/2 top-1/2 h-10 w-10 items-center justify-center rounded-full border-2 border-foreground bg-background text-xl font-semibold text-foreground"
-            style={{ 
-              transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)`
-            }}
-          >
-            {selectedSocial.label.charAt(0)}
-          </span>
+    <div className="flex items-center gap-4">
+      <div>
+        <div
+          role="slider"
+          tabIndex={0}
+          aria-label="Choisir un réseau social"
+          aria-valuemin={0}
+          aria-valuemax={maximumIndex}
+          aria-valuenow={selectedIndex}
+          aria-valuetext={selectedSocial.label}
+          className="relative flex h-32 w-32 touch-none select-none items-center justify-center rounded-full border-2 border-foreground/50 bg-background outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-secondary cursor-grab active:cursor-grabbing"
+          onKeyDown={handleKeyDown}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={stopDragging}
+          onPointerCancel={stopDragging}
+        >
+          { /* middle circle */}
+          <div className="absolute inset-2 rounded-full border border-foreground/30">
+            <span
+              className="absolute flex left-1/2 top-1/2 h-10 w-10 items-center justify-center rounded-full border-2 border-foreground bg-background text-xl font-semibold text-foreground"
+              style={{
+                transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)`
+              }}
+            >
+              {selectedSocial.label.charAt(0)}
+            </span>
+          </div>
+
         </div>
-        
+
+        {/* <p className="text-center text-lg font-medium text-foreground" aria-live="polite">
+          {selectedSocial.label}
+        </p> */}
+
+        <a
+          href={selectedSocial.href}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center justify-center text-sm text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
+        >
+          { t.contact.openProfileLink }
+        </a>
       </div>
 
-      <p className="text-center text-lg font-medium text-foreground" aria-live="polite">
-        {selectedSocial.label}
-      </p>
-
-      <a
-        href={selectedSocial.href}
-        target="_blank"
-        rel="noreferrer"
-        className="text-sm text-secondary underline-offset-4 transition-opacity hover:opacity-70 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
-      >
-        { t.contact.openProfileLink }
-      </a>
+      <SocialWaveform
+        position={position}
+        selectedIndex={selectedIndex}
+        isDragging={isDragging}
+      />
     </div>
   );
 }
